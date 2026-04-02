@@ -13,10 +13,6 @@ export default function CollectionsPage() {
       description: 'Premium fragrances for men and women with exquisite blends',
       image: '💜',
       link: '/fragranza/collections/perfumes',
-      subcategories: [
-        { name: 'Perfumes - Men', link: '/fragranza/collections/perfumes/men' },
-        { name: 'Perfumes - Women', link: '/fragranza/collections/perfumes/women' },
-      ],
     },
     {
       name: 'Cologne',
@@ -47,10 +43,6 @@ export default function CollectionsPage() {
       description: 'Premium ethyl and isopropyl alcohol for sanitization',
       image: '🧪',
       link: '/fragranza/collections/alcohol',
-      subcategories: [
-        { name: 'Alcohol - Ethyl', link: '/fragranza/collections/alcohol/ethyl' },
-        { name: 'Alcohol - Isopropyl', link: '/fragranza/collections/alcohol/isopropyl' },
-      ],
     },
     {
       name: 'Car Diffuser',
