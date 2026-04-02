@@ -1,6 +1,6 @@
 import { AccountProfile, UpdateProfileRequest, ChangePasswordRequest, UserPreferences, UpdatePreferencesRequest, ActivityLog, ApiResponse } from '@/app/types/account';
 
-const API_BASE_URL = 'http://localhost/internship-system/api';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost/internship-system/api';
 
 // Get auth token from localStorage
 const getAuthToken = () => {

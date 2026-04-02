@@ -137,7 +137,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     try {
       // Try PHP endpoint first
       try {
-        const response = await fetch('http://localhost/internship_system/api/auth/login.php', {
+        const apiUrl = `${process.env.NEXT_PUBLIC_API_AUTH_URL}/login.php`;
+        const response = await fetch(apiUrl, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

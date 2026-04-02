@@ -10,7 +10,7 @@ import {
   InternProgressDashboard, AttendanceReport
 } from '@/app/types/enterprises';
 
-const API_BASE_URL = 'http://localhost/internship-system/api';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost/internship-system/api';
 
 const getAuthToken = () => {
   if (typeof window !== 'undefined') {
