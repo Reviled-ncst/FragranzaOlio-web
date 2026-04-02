@@ -6,32 +6,52 @@ import Link from 'next/link';
 export default function CollectionsPage() {
   const collections = [
     {
-      name: 'Floral',
-      description: 'Delicate and romantic fragrances with floral notes',
-      image: '🌸',
-      count: 12,
-      link: '/fragranza/collections/floral',
+      name: 'Perfumes',
+      description: 'Premium fragrances for men and women with exquisite blends',
+      image: '💜',
+      link: '/fragranza/collections/perfumes',
     },
     {
-      name: 'Woody',
-      description: 'Rich and warm fragrances with woody base notes',
-      image: '🌲',
-      count: 8,
-      link: '/fragranza/collections/woody',
+      name: 'Cologne',
+      description: 'Fresh and crisp colognes for everyday elegance',
+      image: '🧴',
+      link: '/fragranza/collections/cologne',
     },
     {
-      name: 'Oriental',
-      description: 'Luxurious and sensual oriental fragrances',
-      image: '✨',
-      count: 10,
-      link: '/fragranza/collections/oriental',
+      name: 'Soap',
+      description: 'Luxurious aromatic soaps for a premium bathing experience',
+      image: '🧼',
+      link: '/fragranza/collections/soap',
     },
     {
-      name: 'Fresh',
-      description: 'Crisp and invigorating fresh fragrances',
-      image: '🍋',
-      count: 6,
-      link: '/fragranza/collections/fresh',
+      name: 'Helmet Spray',
+      description: 'Refreshing spray designed for helmet care and odor control',
+      image: '🏍️',
+      link: '/fragranza/collections/helmet-spray',
+    },
+    {
+      name: 'Liquid Hand Soap',
+      description: 'Gentle and effective hand soap with natural ingredients',
+      image: '🚰',
+      link: '/fragranza/collections/liquid-hand-soap',
+    },
+    {
+      name: 'Alcohol',
+      description: 'Premium ethyl and isopropyl alcohol for sanitization',
+      image: '🧪',
+      link: '/fragranza/collections/alcohol',
+    },
+    {
+      name: 'Car Diffuser',
+      description: 'Long-lasting car fragrances for a fresh driving experience',
+      image: '🚗',
+      link: '/fragranza/collections/car-diffuser',
+    },
+    {
+      name: 'Dishwashing Liquid',
+      description: 'Powerful yet gentle dishwashing liquid with pleasant fragrance',
+      image: '🍽️',
+      link: '/fragranza/collections/dishwashing-liquid',
     },
   ];
 
@@ -48,13 +68,13 @@ export default function CollectionsPage() {
             Our <span className="text-yellow-400">Collections</span>
           </h1>
           <p className="text-gray-400 text-lg max-w-2xl mx-auto">
-            Explore carefully curated fragrance collections, each telling its own unique story
+            Explore our premium product collections, each crafted with quality and care
           </p>
         </motion.div>
 
         {/* Collections Grid */}
         <motion.div
-          className="grid grid-cols-1 md:grid-cols-2 gap-8"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.1 }}
@@ -64,32 +84,30 @@ export default function CollectionsPage() {
               key={collection.name}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: idx * 0.1 }}
+              transition={{ delay: idx * 0.08 }}
             >
               <Link href={collection.link}>
                 <motion.div
-                  className="group relative h-80 rounded-2xl overflow-hidden cursor-pointer bg-gradient-to-br from-yellow-500/20 via-amber-500/10 to-black/50 border border-yellow-500/30 hover:border-yellow-500/60 transition-all"
-                  whileHover={{ y: -10 }}
+                  className="group relative h-64 rounded-2xl overflow-hidden cursor-pointer bg-gradient-to-br from-yellow-500/20 via-amber-500/10 to-black/50 border border-yellow-500/30 hover:border-yellow-500/60 transition-all"
+                  whileHover={{ y: -8 }}
                 >
                   {/* Overlay background */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
 
                   {/* Content */}
-                  <div className="absolute inset-0 flex flex-col items-center justify-center p-8 text-center">
-                    <span className="text-6xl mb-6 group-hover:scale-110 transition-transform duration-300">
+                  <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center">
+                    <span className="text-5xl mb-4 group-hover:scale-110 transition-transform duration-300">
                       {collection.image}
                     </span>
 
-                    <h3 className="text-3xl font-bold text-white mb-3 group-hover:text-yellow-400 transition-colors">
+                    <h3 className="text-2xl font-bold text-white mb-2 group-hover:text-yellow-400 transition-colors">
                       {collection.name}
                     </h3>
 
-                    <p className="text-gray-300 text-sm mb-4 max-w-xs">{collection.description}</p>
-
-                    <div className="text-yellow-400 font-medium">{collection.count} Fragrances</div>
+                    <p className="text-gray-300 text-sm max-w-xs">{collection.description}</p>
 
                     <motion.div
-                      className="mt-6 px-6 py-2 bg-gradient-to-r from-yellow-500 to-amber-500 text-black font-bold rounded-lg opacity-0 group-hover:opacity-100 transition-opacity"
+                      className="mt-4 px-5 py-1.5 bg-gradient-to-r from-yellow-500 to-amber-500 text-black font-bold text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity"
                       whileHover={{ scale: 1.05 }}
                     >
                       Explore →
