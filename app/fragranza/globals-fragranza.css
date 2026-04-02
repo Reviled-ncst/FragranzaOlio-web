@@ -1,0 +1,196 @@
+@import "tailwindcss";
+
+:root {
+  /* Dark Theme Base */
+  --background: #0a0a0a;
+  --foreground: #f5f1e8;
+
+  /* Luxury Color Palette */
+  --color-primary: #FFD700;           /* Metallic Gold */
+  --color-secondary: #F8C471;         /* Rose Gold */
+  --color-tertiary: #8B3A3A;          /* Deep Burgundy */
+  --color-background: #0a0a0a;        /* Deep Black */
+  --color-surface: #1a1a1a;           /* Dark Charcoal */
+  --color-surface-light: #2a2a2a;     /* Lighter Charcoal */
+  --color-border: rgba(255, 215, 0, 0.2);  /* Gold Border */
+  --color-border-hover: rgba(255, 215, 0, 0.4); /* Gold Border Hover */
+  --color-text-primary: #f5f1e8;      /* Warm Cream */
+  --color-text-secondary: #b8b8b8;    /* Soft Gray */
+  --color-text-tertiary: #8a8a8a;     /* Medium Gray */
+
+  /* Gradients */
+  --gradient-gold-rose: linear-gradient(135deg, #FFD700, #F8C471);
+  --gradient-gold-burgundy: linear-gradient(135deg, #FFD700, #8B3A3A);
+
+  /* Transitions & Animations */
+  --transition-fast: 0.2s ease-in-out;
+  --transition-standard: 0.4s ease-in-out;
+  --transition-slow: 0.8s ease-in-out;
+  --easing-luxury: cubic-bezier(0.35, 0, 0.25, 1);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* ===== Animation Keyframes ===== */
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+@keyframes glowPulse {
+  0%, 100% {
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.3), inset 0 0 10px rgba(255, 215, 0, 0.1);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(255, 215, 0, 0.6), inset 0 0 20px rgba(255, 215, 0, 0.2);
+  }
+}
+
+@keyframes drawLine {
+  from {
+    width: 0;
+    opacity: 0;
+  }
+  to {
+    width: 100%;
+    opacity: 1;
+  }
+}
+
+@keyframes mist {
+  0%, 100% {
+    opacity: 0.3;
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    opacity: 0.6;
+    transform: translateY(-10px) scale(1.05);
+  }
+}
+
+@keyframes sparkle {
+  0%, 100% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* ===== Component-Specific Styles ===== */
+
+/* Luxury Input Styling */
+input[type="email"],
+input[type="text"],
+input[type="password"],
+textarea,
+select {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-primary);
+  transition: all var(--transition-standard);
+}
+
+input[type="email"]:focus,
+input[type="text"]:focus,
+input[type="password"]:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: var(--color-secondary);
+  box-shadow: 0 0 0 2px rgba(248, 196, 113, 0.1), inset 0 0 0 1px var(--color-secondary);
+}
+
+/* Smooth Scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Selection Color */
+::selection {
+  background-color: var(--color-primary);
+  color: var(--color-background);
+}
+
+::-moz-selection {
+  background-color: var(--color-primary);
+  color: var(--color-background);
+}
