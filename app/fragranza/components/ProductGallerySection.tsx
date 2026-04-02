@@ -2,115 +2,10 @@
 
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect, useRef } from 'react';
+import Image from 'next/image';
+import { getProductsByGender, filterProducts, type Product } from '@/app/lib/productData';
 
-interface Fragrance {
-  id: string;
-  name: string;
-  description: string;
-  notes: string[];
-  intensity: 1 | 2 | 3 | 4 | 5;
-  price: number;
-  image: string;
-  collection: string;
-}
-
-const fragrancesData: Fragrance[] = [
-  {
-    id: '1',
-    name: 'Notte Stellata',
-    description: 'A mysterious blend of vanilla and amber',
-    notes: ['Floral', 'Woody'],
-    intensity: 4,
-    price: 89,
-    image: 'rose',
-    collection: 'Luxury',
-  },
-  {
-    id: '2',
-    name: 'Giardino Segreto',
-    description: 'Fresh florals with citrus undertones',
-    notes: ['Floral', 'Fresh'],
-    intensity: 3,
-    price: 75,
-    image: 'flower',
-    collection: 'Classic',
-  },
-  {
-    id: '3',
-    name: 'Oud Magnifico',
-    description: 'Rich oud with oriental spices',
-    notes: ['Woody', 'Oriental'],
-    intensity: 5,
-    price: 129,
-    image: 'wood',
-    collection: 'Luxury',
-  },
-  {
-    id: '4',
-    name: 'Citrus Dolce',
-    description: 'Vibrant citrus with sweet notes',
-    notes: ['Fruity', 'Fresh'],
-    intensity: 2,
-    price: 65,
-    image: 'citrus',
-    collection: 'Classic',
-  },
-  {
-    id: '5',
-    name: 'Rosa Eterna',
-    description: 'Classic rose with subtle spice',
-    notes: ['Floral', 'Oriental'],
-    intensity: 3,
-    price: 79,
-    image: 'rose',
-    collection: 'Romance',
-  },
-  {
-    id: '6',
-    name: 'Bosco Profondo',
-    description: 'Deep forest scent with cedar',
-    notes: ['Woody', 'Fresh'],
-    intensity: 4,
-    price: 95,
-    image: 'forest',
-    collection: 'Nature',
-  },
-  {
-    id: '7',
-    name: 'Ambra Dolce',
-    description: 'Sweet amber with vanilla warmth',
-    notes: ['Oriental', 'Fruity'],
-    intensity: 3,
-    price: 82,
-    image: 'amber',
-    collection: 'Luxury',
-  },
-  {
-    id: '8',
-    name: 'Oceano Blu',
-    description: 'Fresh aquatic with sea salt',
-    notes: ['Fresh', 'Fruity'],
-    intensity: 2,
-    price: 68,
-    image: 'ocean',
-    collection: 'Classic',
-  },
-];
-
-const NOTES = ['Floral', 'Woody', 'Fresh', 'Oriental', 'Fruity'];
-
-const getImagePlaceholder = (imageType: string) => {
-  const colors = {
-    rose: 'from-pink-500 to-rose-600',
-    flower: 'from-purple-500 to-pink-600',
-    wood: 'from-amber-700 to-amber-900',
-    citrus: 'from-yellow-400 to-orange-500',
-    forest: 'from-green-600 to-emerald-700',
-    amber: 'from-amber-500 to-yellow-600',
-    ocean: 'from-blue-500 to-cyan-600',
-  };
-  return colors[imageType as keyof typeof colors] || 'from-yellow-400 to-amber-500';
-};
+const NOTES = ['Floral', 'Woody', 'Fresh', 'Oriental', 'Fruity', 'Spicy', 'Amber', 'Musk'];
 
 export default function ProductGallerySection() {
   const [selectedNotes, setSelectedNotes] = useState<string[]>([]);
@@ -135,13 +30,10 @@ export default function ProductGallerySection() {
     return () => observer.disconnect();
   }, []);
 
-  const filteredFragrances = fragrancesData.filter((fragrance) => {
-    const notesMatch =
-      selectedNotes.length === 0 ||
-      selectedNotes.some((note) => fragrance.notes.includes(note));
-    const intensityMatch =
-      selectedIntensity === null || fragrance.intensity === selectedIntensity;
-    return notesMatch && intensityMatch;
+  // Get filtered products from real product data
+  const filteredFragrances = filterProducts(getProductsByGender('all'), {
+    notes: selectedNotes.length > 0 ? selectedNotes : undefined,
+    intensity: selectedIntensity ? [selectedIntensity] : undefined,
   });
 
   const toggleNote = (note: string) => {
@@ -166,11 +58,11 @@ export default function ProductGallerySection() {
           <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-4 text-white">
             Our{' '}
             <span className="bg-gradient-to-r from-yellow-300 to-amber-300 bg-clip-text text-transparent">
-              Signature Collection
+              Collection
             </span>
           </h2>
           <p className="text-gray-400 text-lg max-w-2xl mx-auto">
-            Discover fragrances crafted to perfection. Find your scent by notes and intensity.
+            Discover {filteredFragrances.length} exquisite fragrances crafted to perfection. Find your scent by notes and intensity.
           </p>
         </motion.div>
 
@@ -240,7 +132,7 @@ export default function ProductGallerySection() {
           initial={{ opacity: 0 }}
           animate={isInView ? { opacity: 1 } : { opacity: 0 }}
         >
-          Showing {filteredFragrances.length} of {fragrancesData.length} fragrances
+          Showing {filteredFragrances.length} of 106 fragrances
         </motion.p>
 
         {/* Product Grid */}
@@ -256,7 +148,7 @@ export default function ProductGallerySection() {
                 transition={{ duration: 0.3 }}
                 className="group relative"
               >
-                <div className="relative h-full rounded-2xl border border-yellow-500/20 bg-gradient-to-br from-white/3 to-yellow-500/5 p-6 overflow-hidden transition-all duration-300 hover:border-yellow-500/50 hover:from-white/5 hover:to-yellow-500/10">
+                <div className="relative h-full rounded-2xl border border-yellow-500/20 bg-gradient-to-br from-white/3 to-yellow-500/5 p-6 overflow-hidden transition-all duration-300 hover:border-yellow-500/50 hover:from-white/5 hover:to-yellow-500/10 flex flex-col">
                   {/* Card Background */}
                   <motion.div
                     className="absolute inset-0 bg-gradient-to-br from-yellow-500/0 to-amber-500/0"
@@ -269,18 +161,21 @@ export default function ProductGallerySection() {
 
                   {/* Content */}
                   <div className="relative z-10 flex flex-col h-full">
-                    {/* Image/Icon - Bottle Placeholder */}
+                    {/* Real Product Image */}
                     <motion.div
-                      className={`w-full aspect-square bg-gradient-to-br ${getImagePlaceholder(fragrance.image)} rounded-xl mb-4 flex items-center justify-center text-white relative overflow-hidden`}
+                      className="w-full aspect-square bg-slate-800 rounded-xl mb-4 overflow-hidden relative"
                       whileHover={{
                         scale: 1.08,
                       }}
                       transition={{ duration: 0.3 }}
                     >
-                      {/* Bottle SVG Shape */}
-                      <svg width="80" height="120" viewBox="0 0 80 120" fill="none">
-                        <path d="M30 20 L35 15 L45 15 L50 20 L50 40 Q50 50 45 55 L45 100 Q45 110 40 115 L40 115 Q35 110 35 100 L35 55 Q30 50 30 40 Z" fill="rgba(255,255,255,0.3)" strokeWidth="1.5" stroke="rgba(255,255,255,0.6)" strokeLinecap="round" strokeLinejoin="round"/>
-                      </svg>
+                      <Image
+                        src={fragrance.image}
+                        alt={fragrance.name}
+                        fill
+                        className="object-cover"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                      />
                     </motion.div>
 
                     {/* Title */}
@@ -289,13 +184,13 @@ export default function ProductGallerySection() {
                     </h3>
 
                     {/* Description */}
-                    <p className="text-gray-400 text-sm mb-4 flex-grow">
+                    <p className="text-gray-400 text-sm mb-4 flex-grow line-clamp-2">
                       {fragrance.description}
                     </p>
 
                     {/* Notes Tags */}
                     <div className="flex flex-wrap gap-2 mb-4">
-                      {fragrance.notes.map((note) => (
+                      {fragrance.notes.slice(0, 3).map((note) => (
                         <span
                           key={note}
                           className="px-2.5 py-1 rounded-full text-xs bg-yellow-500/15 text-yellow-300 border border-yellow-500/30"
@@ -325,7 +220,7 @@ export default function ProductGallerySection() {
                     {/* Price & Button */}
                     <div className="flex items-center justify-between pt-4 border-t border-yellow-500/10">
                       <span className="text-2xl font-bold text-yellow-300">
-                        ${fragrance.price}
+                        {fragrance.price}
                       </span>
                       <motion.button
                         className="px-4 py-2 bg-gradient-to-r from-yellow-400 to-amber-300 hover:from-yellow-300 hover:to-yellow-200 text-black font-semibold rounded-lg text-sm transition-all"
