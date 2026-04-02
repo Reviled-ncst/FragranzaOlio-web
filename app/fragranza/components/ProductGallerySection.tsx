@@ -31,10 +31,14 @@ export default function ProductGallerySection() {
   }, []);
 
   // Get filtered products from real product data
-  const filteredFragrances = filterProducts(getProductsByGender('all'), {
+  const allFilteredFragrances = filterProducts(getProductsByGender('all'), {
     notes: selectedNotes.length > 0 ? selectedNotes : undefined,
     intensity: selectedIntensity ? [selectedIntensity] : undefined,
   });
+
+  // Limit to 25 products for landing page
+  const filteredFragrances = allFilteredFragrances.slice(0, 25);
+  const hasMore = allFilteredFragrances.length > 25;
 
   const toggleNote = (note: string) => {
     setSelectedNotes((prev) =>
@@ -132,7 +136,7 @@ export default function ProductGallerySection() {
           initial={{ opacity: 0 }}
           animate={isInView ? { opacity: 1 } : { opacity: 0 }}
         >
-          Showing {filteredFragrances.length} of 106 fragrances
+          Showing {filteredFragrances.length} of {allFilteredFragrances.length} fragrances
         </motion.p>
 
         {/* Product Grid */}
@@ -252,6 +256,26 @@ export default function ProductGallerySection() {
             </motion.div>
           )}
         </AnimatePresence>
+
+        {/* View All Button */}
+        {hasMore && filteredFragrances.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+            className="flex justify-center mt-12"
+          >
+            <a
+              href="/fragranza/products"
+              className="px-8 py-3 bg-gradient-to-r from-yellow-400 to-amber-300 hover:from-yellow-300 hover:to-yellow-200 text-black font-semibold rounded-lg text-base transition-all inline-flex items-center gap-2"
+            >
+              View All Products
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </a>
+          </motion.div>
+        )}
       </div>
     </section>
   );
