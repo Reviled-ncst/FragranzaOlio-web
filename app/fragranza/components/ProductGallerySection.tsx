@@ -3,6 +3,7 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { getProductsByGender, filterProducts, type Product } from '@/app/lib/productData';
 
 const NOTES = ['Floral', 'Woody', 'Fresh', 'Oriental', 'Fruity', 'Spicy', 'Amber', 'Musk'];
@@ -143,15 +144,15 @@ export default function ProductGallerySection() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <AnimatePresence mode="popLayout">
             {filteredFragrances.map((fragrance, index) => (
-              <motion.div
-                key={fragrance.id}
-                layout
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.8 }}
-                transition={{ duration: 0.3 }}
-                className="group relative"
-              >
+              <Link key={fragrance.id} href={`/fragranza/products/${fragrance.id}`}>
+                <motion.div
+                  layout
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.8 }}
+                  transition={{ duration: 0.3 }}
+                  className="group relative cursor-pointer"
+                >
                 <div className="relative h-full rounded-2xl border border-yellow-500/20 bg-gradient-to-br from-white/3 to-yellow-500/5 p-6 overflow-hidden transition-all duration-300 hover:border-yellow-500/50 hover:from-white/5 hover:to-yellow-500/10 flex flex-col">
                   {/* Card Background */}
                   <motion.div
@@ -237,6 +238,7 @@ export default function ProductGallerySection() {
                   </div>
                 </div>
               </motion.div>
+            </Link>
             ))}
           </AnimatePresence>
         </div>

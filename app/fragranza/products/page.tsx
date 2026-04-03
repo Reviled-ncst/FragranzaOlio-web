@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion';
 import { useState, useMemo } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { getProductsByGender, filterProducts, type Product } from '@/app/lib/productData';
 import { SearchIcon, FilterIcon } from '../components/Icons/SocialIcons';
 
@@ -136,14 +137,14 @@ export default function ProductsPage() {
             transition={{ delay: 0.2 }}
           >
             {filteredProducts.map((product, idx) => (
-              <motion.div
-                key={product.id}
-                className="group rounded-2xl bg-gradient-to-br from-slate-900/50 via-slate-800/50 to-black/50 border border-yellow-500/20 overflow-hidden hover:border-yellow-500/50 transition-all flex flex-col"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: idx * 0.05 }}
-                whileHover={{ y: -10 }}
-              >
+              <Link key={product.id} href={`/fragranza/products/${product.id}`}>
+                <motion.div
+                  className="group rounded-2xl bg-gradient-to-br from-slate-900/50 via-slate-800/50 to-black/50 border border-yellow-500/20 overflow-hidden hover:border-yellow-500/50 transition-all flex flex-col cursor-pointer h-full"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: idx * 0.05 }}
+                  whileHover={{ y: -10 }}
+                >
                 {/* Product Image */}
                 <div className="relative w-full h-64 bg-slate-800 overflow-hidden">
                   <Image
@@ -207,6 +208,7 @@ export default function ProductsPage() {
                   </div>
                 </div>
               </motion.div>
+            </Link>
             ))}
           </motion.div>
         ) : (
