@@ -29,7 +29,6 @@ function ClientLayoutContent({ children }: { children: React.ReactNode }) {
     { label: 'Shop', href: '/client', icon: '🛍️' },
     { label: 'Cart', href: '/client/cart', icon: '🛒' },
     { label: 'My Orders', href: '/client/orders', icon: '📦' },
-    { label: 'Learning Materials', href: '/client/learning', icon: '📚' },
     { label: 'Account', href: '/client/account', icon: '⚙️' },
   ];
 
