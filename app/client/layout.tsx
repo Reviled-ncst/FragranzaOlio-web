@@ -4,16 +4,30 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { useAuth } from '@/app/context/AuthContext';
 import { ProtectRoute } from '@/app/components/ProtectedRoute';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
+import { getCartSummary } from '@/app/lib/cartService';
 
 function ClientLayoutContent({ children }: { children: React.ReactNode }) {
   const { user, logout, userRole } = useAuth();
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [cartCount, setCartCount] = useState(0);
   const pathname = usePathname();
+
+  useEffect(() => {
+    const updateCart = () => {
+      const cartSummary = getCartSummary();
+      setCartCount(cartSummary.itemCount);
+    };
+
+    updateCart();
+    const interval = setInterval(updateCart, 500);
+    return () => clearInterval(interval);
+  }, []);
 
   const clientModules = [
     { label: 'Shop', href: '/client', icon: '🛍️' },
+    { label: 'Cart', href: '/client/cart', icon: '🛒' },
     { label: 'My Orders', href: '/client/orders', icon: '📦' },
     { label: 'Learning Materials', href: '/client/learning', icon: '📚' },
     { label: 'Account', href: '/client/account', icon: '⚙️' },
@@ -178,13 +192,35 @@ function ClientLayoutContent({ children }: { children: React.ReactNode }) {
       <div className={`flex-1 flex flex-col transition-all duration-300 ${isSidebarOpen ? 'ml-56' : 'ml-16'}`}>
         {/* Top Header */}
         <motion.div
-          className="bg-gradient-to-r from-slate-900 to-black border-b border-yellow-500/20 px-6 sm:px-8 py-4 sticky top-0 z-10"
+          className="bg-gradient-to-r from-slate-900 to-black border-b border-yellow-500/20 px-6 sm:px-8 py-4 sticky top-0 z-10 flex items-center justify-between"
           initial={{ y: -20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
         >
           <h1 className="text-2xl sm:text-3xl font-bold text-white">
             Fragranza Olio <span className="text-yellow-400">Shop</span>
           </h1>
+
+          <Link href="/client/cart">
+            <motion.div
+              className="relative flex items-center gap-2 px-4 py-2 rounded-lg border border-yellow-500/30 bg-yellow-500/10 hover:border-yellow-500/60 transition-all cursor-pointer"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <svg className="w-6 h-6 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+              </svg>
+              {cartCount > 0 && (
+                <motion.span
+                  className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white text-xs font-bold rounded-full flex items-center justify-center"
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ type: 'spring', stiffness: 300 }}
+                >
+                  {cartCount}
+                </motion.span>
+              )}
+            </motion.div>
+          </Link>
         </motion.div>
 
         {/* Page Content */}
