@@ -28,11 +28,11 @@ function ClientLayoutContent({ children }: { children: React.ReactNode }) {
 
   return (
     <motion.div className="min-h-screen bg-black flex" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-      {/* Sidebar */}
+      {/* Sidebar - Fixed Height */}
       <motion.div
-        className={`${
+        className={`fixed left-0 top-0 h-screen ${
           isSidebarOpen ? 'w-56' : 'w-16'
-        } bg-gradient-to-b from-slate-900 via-slate-800 to-black border-r border-yellow-500/20 transition-all duration-300 flex flex-col`}
+        } bg-gradient-to-b from-slate-900 via-slate-800 to-black border-r border-yellow-500/20 transition-all duration-300 flex flex-col z-20`}
         initial={{ x: -300 }}
         animate={{ x: 0 }}
       >
@@ -174,8 +174,8 @@ function ClientLayoutContent({ children }: { children: React.ReactNode }) {
         )}
       </motion.div>
 
-      {/* Main Content */}
-      <div className="flex-1 flex flex-col">
+      {/* Main Content - Adjusted for Fixed Sidebar */}
+      <div className={`flex-1 flex flex-col transition-all duration-300 ${isSidebarOpen ? 'ml-56' : 'ml-16'}`}>
         {/* Top Header */}
         <motion.div
           className="bg-gradient-to-r from-slate-900 to-black border-b border-yellow-500/20 px-6 sm:px-8 py-4 sticky top-0 z-10"

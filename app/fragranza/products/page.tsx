@@ -196,7 +196,7 @@ export default function ProductsPage() {
 
                   {/* Price & Button */}
                   <div className="flex items-center justify-between mt-auto pt-4 border-t border-yellow-500/20">
-                    <span className="text-2xl font-bold text-yellow-400">{product.price}</span>
+                    <span className="text-2xl font-bold text-yellow-400">{product.basePrice}</span>
                     <motion.button
                       className="px-4 py-2 bg-yellow-500 hover:bg-yellow-400 text-black font-semibold rounded-lg transition-all"
                       whileHover={{ scale: 1.05 }}

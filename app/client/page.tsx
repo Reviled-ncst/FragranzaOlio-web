@@ -172,7 +172,7 @@ export default function ClientShopPage() {
 
                 {/* Price & Button */}
                 <div className="flex items-center justify-between mt-auto pt-3 border-t border-yellow-500/20">
-                  <span className="text-lg font-bold text-yellow-400">{product.price}</span>
+                  <span className="text-lg font-bold text-yellow-400">${product.basePrice}</span>
                   <motion.button
                     onClick={() => addToCart(product.id)}
                     className="px-3 py-1.5 bg-yellow-500 hover:bg-yellow-400 text-black font-semibold rounded text-sm transition-all"

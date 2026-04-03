@@ -82,6 +82,35 @@ function InternDashboardContent() {
     },
   ];
 
+  // Mock available learning materials
+  const availableMaterials = [
+    {
+      id: 1,
+      topic: 'Frontend Development',
+      materials: [
+        { id: 'mat-1', title: 'React Hooks Guide', type: 'Document', duration: '15 mins', completed: true },
+        { id: 'mat-2', title: 'Component Patterns Tutorial', type: 'Video', duration: '45 mins', completed: true },
+        { id: 'mat-3', title: 'Advanced React Patterns', type: 'Document', duration: '30 mins', completed: false },
+      ],
+    },
+    {
+      id: 2,
+      topic: 'Backend Development',
+      materials: [
+        { id: 'mat-4', title: 'Node.js Fundamentals', type: 'Video', duration: '60 mins', completed: false },
+        { id: 'mat-5', title: 'Express.js REST APIs', type: 'Document', duration: '20 mins', completed: false },
+      ],
+    },
+    {
+      id: 3,
+      topic: 'Database & SQL',
+      materials: [
+        { id: 'mat-6', title: 'SQL Basics', type: 'Document', duration: '25 mins', completed: false },
+        { id: 'mat-7', title: 'Database Design Principles', type: 'Video', duration: '50 mins', completed: false },
+      ],
+    },
+  ];
+
   return (
     <motion.div className="space-y-6" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
       {/* Header */}
@@ -277,35 +306,57 @@ function InternDashboardContent() {
         </div>
       </motion.div>
 
-      {/* Learning Materials Accessed */}
+      {/* Available Learning Library */}
       <motion.div
         className="p-8 rounded-lg bg-gradient-to-br from-slate-900/50 to-black/50 border border-yellow-500/20"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.6 }}
+        transition={{ delay: 0.7 }}
       >
-        <h3 className="text-xl font-bold text-white mb-6">Learning Materials Accessed</h3>
-        <div className="space-y-3">
-          {materialsAccessed.map((material, idx) => (
+        <h3 className="text-xl font-bold text-white mb-6">📚 Learning Library</h3>
+        <div className="space-y-6">
+          {availableMaterials.map((topicGroup, topicIdx) => (
             <motion.div
-              key={material.id}
-              className="p-4 rounded-lg bg-purple-500/10 border border-purple-500/20 flex items-center justify-between"
+              key={topicGroup.id}
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.6 + idx * 0.05 }}
+              transition={{ delay: 0.7 + topicIdx * 0.05 }}
             >
-              <div className="flex items-center gap-3">
-                <span className="text-2xl">{material.type === 'Document' ? '📄' : '🎥'}</span>
-                <div>
-                  <p className="font-semibold text-white text-sm">{material.title}</p>
-                  <p className="text-xs text-gray-400">
-                    Accessed {material.accessedDate} • {material.duration}
-                  </p>
-                </div>
+              <h4 className="text-lg font-semibold text-yellow-400 mb-3">{topicGroup.topic}</h4>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                {topicGroup.materials.map((material) => (
+                  <motion.div
+                    key={material.id}
+                    className={`p-4 rounded-lg border transition-all cursor-pointer hover:border-yellow-500/50 ${
+                      material.completed
+                        ? 'bg-green-500/10 border-green-500/30'
+                        : 'bg-blue-500/10 border-blue-500/30'
+                    }`}
+                    whileHover={{ scale: 1.02 }}
+                  >
+                    <div className="flex items-start justify-between mb-2">
+                      <div className="flex items-center gap-2">
+                        <span className="text-lg">{material.type === 'Document' ? '📄' : '🎥'}</span>
+                        <div>
+                          <p className="font-semibold text-white text-sm">{material.title}</p>
+                          <p className="text-xs text-gray-400">{material.type} • {material.duration}</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span
+                        className={`text-xs px-2 py-1 rounded-full font-medium ${
+                          material.completed
+                            ? 'bg-green-500/20 text-green-300'
+                            : 'bg-yellow-500/20 text-yellow-300'
+                        }`}
+                      >
+                        {material.completed ? '✓ Completed' : 'Available'}
+                      </span>
+                    </div>
+                  </motion.div>
+                ))}
               </div>
-              <span className="text-xs px-2 py-1 rounded-full bg-purple-500/20 text-purple-300">
-                {material.type}
-              </span>
             </motion.div>
           ))}
         </div>

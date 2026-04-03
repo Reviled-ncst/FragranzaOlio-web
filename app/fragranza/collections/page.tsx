@@ -13,6 +13,10 @@ export default function CollectionsPage() {
       description: 'Premium fragrances for men and women with exquisite blends',
       image: '💜',
       link: '/fragranza/collections/perfumes',
+      subcategories: [
+        { name: 'Perfumes - Men', link: '/fragranza/collections/perfumes/men' },
+        { name: 'Perfumes - Women', link: '/fragranza/collections/perfumes/women' },
+      ],
     },
     {
       name: 'Cologne',
@@ -43,6 +47,10 @@ export default function CollectionsPage() {
       description: 'Premium ethyl and isopropyl alcohol for sanitization',
       image: '🧪',
       link: '/fragranza/collections/alcohol',
+      subcategories: [
+        { name: 'Alcohol - Ethyl', link: '/fragranza/collections/alcohol/ethyl' },
+        { name: 'Alcohol - Isopropyl', link: '/fragranza/collections/alcohol/isopropyl' },
+      ],
     },
     {
       name: 'Car Diffuser',
@@ -105,36 +113,59 @@ export default function CollectionsPage() {
                     : { opacity: 0, y: -10, pointerEvents: 'none' }
                 }
                 transition={{ duration: 0.2 }}
-                className="absolute top-full left-0 right-0 mt-2 bg-slate-900 border border-yellow-500/30 rounded-lg shadow-xl overflow-hidden z-50"
+                className="absolute top-full left-0 right-0 mt-2 bg-slate-900 border border-yellow-500/30 rounded-lg shadow-xl overflow-hidden z-50 max-h-96 overflow-y-auto"
               >
                 {collections.map((collection, idx) => (
-                  <Link key={collection.name} href={collection.link}>
-                    <motion.div
-                      onClick={() => setIsDropdownOpen(false)}
-                      className="px-6 py-4 hover:bg-yellow-500/10 transition-colors border-b border-yellow-500/10 last:border-b-0 cursor-pointer group"
-                      initial={{ opacity: 0, x: -10 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: idx * 0.05 }}
-                      whileHover={{ paddingLeft: 24 }}
-                    >
-                      <div className="flex items-center gap-3">
-                        <span className="text-2xl">{collection.image}</span>
-                        <div className="text-left">
-                          <h3 className="text-white font-semibold group-hover:text-yellow-400 transition-colors">
-                            {collection.name}
-                          </h3>
-                          <p className="text-gray-400 text-xs">{collection.description}</p>
+                  <div key={collection.name}>
+                    {/* Main Category */}
+                    <Link href={collection.link}>
+                      <motion.div
+                        onClick={() => setIsDropdownOpen(false)}
+                        className="px-6 py-4 hover:bg-yellow-500/10 transition-colors border-b border-yellow-500/10 cursor-pointer group"
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: idx * 0.05 }}
+                        whileHover={{ paddingLeft: 24 }}
+                      >
+                        <div className="flex items-center gap-3">
+                          <span className="text-2xl">{collection.image}</span>
+                          <div className="text-left">
+                            <h3 className="text-white font-semibold group-hover:text-yellow-400 transition-colors">
+                              {collection.name}
+                            </h3>
+                            <p className="text-gray-400 text-xs">{collection.description}</p>
+                          </div>
                         </div>
+                      </motion.div>
+                    </Link>
+
+                    {/* Subcategories */}
+                    {collection.subcategories && (
+                      <div className="bg-black/30 border-b border-yellow-500/10">
+                        {collection.subcategories.map((sub, subIdx) => (
+                          <Link key={sub.name} href={sub.link}>
+                            <motion.div
+                              onClick={() => setIsDropdownOpen(false)}
+                              className="px-12 py-3 hover:bg-yellow-500/5 transition-colors text-gray-300 hover:text-yellow-400 text-sm cursor-pointer"
+                              initial={{ opacity: 0, x: -5 }}
+                              animate={{ opacity: 1, x: 0 }}
+                              transition={{ delay: idx * 0.05 + subIdx * 0.03 }}
+                              whileHover={{ paddingLeft: 48 }}
+                            >
+                              → {sub.name}
+                            </motion.div>
+                          </Link>
+                        ))}
                       </div>
-                    </motion.div>
-                  </Link>
+                    )}
+                  </div>
                 ))}
               </motion.div>
             </div>
           </div>
         </motion.div>
 
-        {/* Grid View Below (Optional - can be removed) */}
+        {/* Grid View Below */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}

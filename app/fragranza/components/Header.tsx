@@ -20,6 +20,7 @@ export default function Header() {
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [expandedMobileMenu, setExpandedMobileMenu] = useState<string | null>(null);
+  const [activeNestedDropdown, setActiveNestedDropdown] = useState<string | null>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -32,47 +33,85 @@ export default function Header() {
 
   const navItems = [
     {
-      label: 'Products',
+      label: 'Home',
       icon: ShopIcon,
-      href: '/fragranza/products',
-      submenu: [
-        { label: 'All Fragrances', href: '/fragranza/products' },
-        { label: 'Best Sellers', href: '/fragranza/products' },
-        { label: 'New Arrivals', href: '/fragranza/products' },
-        { label: 'Limited Edition', href: '/fragranza/products' },
-      ],
+      href: '/',
+      submenu: null,
     },
     {
       label: 'Collections',
       icon: CollectionsIcon,
       href: '/fragranza/collections',
       submenu: [
-        { label: 'Floral', href: '/fragranza/collections/floral' },
-        { label: 'Woody', href: '/fragranza/collections/woody' },
-        { label: 'Oriental', href: '/fragranza/collections/oriental' },
-        { label: 'Fresh', href: '/fragranza/collections/fresh' },
+        {
+          label: '✨ Fragrances',
+          href: '#',
+          isGroup: true,
+          nested: [
+            { label: 'Perfumes - Men', href: '/fragranza/collections/perfumes/men' },
+            { label: 'Perfumes - Women', href: '/fragranza/collections/perfumes/women' },
+            { label: 'Cologne', href: '/fragranza/collections/cologne' },
+          ],
+        },
+        {
+          label: '🛁 Personal Care',
+          href: '#',
+          isGroup: true,
+          nested: [
+            { label: 'Soap', href: '/fragranza/collections/soap' },
+            { label: 'Helmet Spray', href: '/fragranza/collections/helmet-spray' },
+            { label: 'Liquid Hand Soap', href: '/fragranza/collections/liquid-hand-soap' },
+          ],
+        },
+        {
+          label: '🏠 Home & Auto',
+          href: '#',
+          isGroup: true,
+          nested: [
+            { label: 'Car Diffuser', href: '/fragranza/collections/car-diffuser' },
+            { label: 'Dishwashing Liquid', href: '/fragranza/collections/dishwashing-liquid' },
+          ],
+        },
+        {
+          label: '🧪 Chemical Products',
+          href: '#',
+          isGroup: true,
+          nested: [
+            { label: 'Ethyl Alcohol', href: '/fragranza/collections/alcohol/ethyl' },
+            { label: 'Isopropyl Alcohol', href: '/fragranza/collections/alcohol/isopropyl' },
+          ],
+        },
       ],
     },
     {
-      label: 'About',
+      label: 'Company',
       icon: AboutIcon,
-      href: '/fragranza/about',
-      submenu: null,
-    },
-    {
-      label: 'Contact',
-      icon: ContactIcon,
-      href: '/fragranza/contact',
-      submenu: null,
-    },
-    {
-      label: 'Internship',
-      icon: InternshipIcon,
-      href: '/internship',
+      href: '#',
       submenu: [
-        { label: 'Browse Opportunities', href: '/internship' },
-        { label: 'Program Info', href: '/internship/about' },
-        { label: 'Apply Now', href: '/internship/apply' },
+        {
+          label: 'Certificates & Awards',
+          href: '/fragranza/certifications',
+          nested: null,
+        },
+        {
+          label: 'About',
+          href: '/fragranza/about',
+          nested: null,
+        },
+        {
+          label: 'Contact',
+          href: '/fragranza/contact',
+          nested: null,
+        },
+        {
+          label: 'Internship Program',
+          href: '/internship',
+          nested: [
+            { label: 'Browse Opportunities', href: '/internship' },
+            { label: 'Program Info', href: '/internship/about' },
+            { label: 'Apply Now', href: '/internship/apply' },
+          ],
+        },
       ],
     },
   ];
@@ -152,24 +191,62 @@ export default function Header() {
                   <AnimatePresence>
                     {hasSubmenu && activeDropdown === item.label && (
                       <motion.div
-                        className="absolute top-full left-0 mt-0 min-w-56 bg-gradient-to-b from-slate-900/95 via-slate-800/95 to-black/95 backdrop-blur-xl rounded-xl shadow-2xl border border-yellow-500/20 overflow-hidden"
+                        className="absolute top-full left-0 mt-0 min-w-56 bg-gradient-to-b from-slate-900/95 via-slate-800/95 to-black/95 backdrop-blur-xl rounded-xl shadow-2xl border border-yellow-500/20 overflow-visible z-50"
                         initial={{ opacity: 0, y: -10 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -10 }}
                         transition={{ duration: 0.2 }}
                       >
                         {item.submenu?.map((subitem, idx) => (
-                          <motion.a
+                          <div
                             key={`${item.label}-${idx}`}
-                            href={subitem.href}
-                            className="block px-5 py-4 text-gray-300 hover:text-yellow-400 hover:bg-yellow-500/10 text-sm font-medium tracking-wide transition-all border-b border-yellow-500/10 last:border-b-0"
-                            initial={{ opacity: 0, x: -10 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ delay: idx * 0.05 }}
-                            whileHover={{ paddingLeft: '25px' }}
+                            className="relative group"
+                            onMouseEnter={() =>
+                              subitem.nested && setActiveNestedDropdown(`${item.label}-${subitem.label}`)
+                            }
+                            onMouseLeave={() => setActiveNestedDropdown(null)}
                           >
-                            {subitem.label}
-                          </motion.a>
+                            <motion.a
+                              href={subitem.href}
+                              className="flex items-center justify-between px-5 py-4 text-gray-300 hover:text-yellow-400 hover:bg-yellow-500/10 text-sm font-medium tracking-wide transition-all border-b border-yellow-500/10 last:border-b-0"
+                              initial={{ opacity: 0, x: -10 }}
+                              animate={{ opacity: 1, x: 0 }}
+                              transition={{ delay: idx * 0.05 }}
+                              whileHover={{ paddingLeft: '25px' }}
+                            >
+                              <span>{subitem.label}</span>
+                              {subitem.nested && (
+                                <span className="text-xs ml-2">→</span>
+                              )}
+                            </motion.a>
+
+                            {/* Nested Dropdown */}
+                            <AnimatePresence>
+                              {subitem.nested && activeNestedDropdown === `${item.label}-${subitem.label}` && (
+                                <motion.div
+                                  className="absolute left-full top-0 ml-1 min-w-40 bg-gradient-to-b from-slate-800/95 via-slate-700/95 to-black/95 backdrop-blur-xl rounded-xl shadow-2xl border border-yellow-500/20 overflow-hidden z-50"
+                                  initial={{ opacity: 0, x: -10 }}
+                                  animate={{ opacity: 1, x: 0 }}
+                                  exit={{ opacity: 0, x: -10 }}
+                                  transition={{ duration: 0.15 }}
+                                >
+                                  {subitem.nested.map((nestedItem, nestedIdx) => (
+                                    <motion.a
+                                      key={`${subitem.label}-${nestedIdx}`}
+                                      href={nestedItem.href}
+                                      className="block px-4 py-3 text-gray-300 hover:text-yellow-400 hover:bg-yellow-500/10 text-sm font-medium tracking-wide transition-all border-b border-yellow-500/10 last:border-b-0"
+                                      initial={{ opacity: 0, x: -5 }}
+                                      animate={{ opacity: 1, x: 0 }}
+                                      transition={{ delay: nestedIdx * 0.03 }}
+                                      whileHover={{ paddingLeft: '20px' }}
+                                    >
+                                      {nestedItem.label}
+                                    </motion.a>
+                                  ))}
+                                </motion.div>
+                              )}
+                            </AnimatePresence>
+                          </div>
                         ))}
                       </motion.div>
                     )}
@@ -187,7 +264,7 @@ export default function Header() {
             whileTap={{ scale: 0.95 }}
           >
             <BagIcon size={16} color="#000" />
-            <span className="relative">Staff Login</span>
+            <span className="relative">Login</span>
           </motion.button>
 
           {/* Mobile Menu Button */}
@@ -280,19 +357,69 @@ export default function Header() {
                             exit={{ opacity: 0, height: 0 }}
                             transition={{ duration: 0.2 }}
                           >
-                            {item.submenu?.map((subitem, idx) => (
-                              <motion.a
-                                key={`${item.label}-${idx}`}
-                                href={subitem.href}
-                                onClick={() => setIsMobileMenuOpen(false)}
-                                className="px-5 py-3 text-gray-300 hover:text-yellow-400 hover:bg-yellow-500/10 text-sm font-medium tracking-wide transition-all rounded-lg border-l-2 border-yellow-500/20 block"
-                                initial={{ opacity: 0, x: -10 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                transition={{ delay: idx * 0.05 }}
-                              >
-                                {subitem.label}
-                              </motion.a>
-                            ))}
+                            {item.submenu?.map((subitem, idx) => {
+                              const nestedExpanded = expandedMobileMenu === `${item.label}-${subitem.label}`;
+
+                              return (
+                                <div key={`${item.label}-${idx}`}>
+                                  {subitem.nested ? (
+                                    <motion.button
+                                      onClick={() => {
+                                        setExpandedMobileMenu(
+                                          nestedExpanded ? null : `${item.label}-${subitem.label}`
+                                        );
+                                      }}
+                                      className="w-full flex items-center justify-between px-5 py-3 text-gray-300 hover:text-yellow-400 hover:bg-yellow-500/10 text-sm font-medium tracking-wide transition-all rounded-lg border-l-2 border-yellow-500/20"
+                                    >
+                                      <span>{subitem.label}</span>
+                                      <motion.span
+                                        animate={{ rotate: nestedExpanded ? 180 : 0 }}
+                                        transition={{ duration: 0.3 }}
+                                        className="text-xs"
+                                      >
+                                        ▼
+                                      </motion.span>
+                                    </motion.button>
+                                  ) : (
+                                    <motion.a
+                                      href={subitem.href}
+                                      onClick={() => setIsMobileMenuOpen(false)}
+                                      className="px-5 py-3 text-gray-300 hover:text-yellow-400 hover:bg-yellow-500/10 text-sm font-medium tracking-wide transition-all rounded-lg border-l-2 border-yellow-500/20 block"
+                                      initial={{ opacity: 0, x: -10 }}
+                                      animate={{ opacity: 1, x: 0 }}
+                                      transition={{ delay: idx * 0.05 }}
+                                    >
+                                      {subitem.label}
+                                    </motion.a>
+                                  )}
+
+                                  {/* Nested Mobile Submenu */}
+                                  {subitem.nested && nestedExpanded && (
+                                    <motion.div
+                                      className="ml-4 mt-1 flex flex-col gap-1"
+                                      initial={{ opacity: 0, height: 0 }}
+                                      animate={{ opacity: 1, height: 'auto' }}
+                                      exit={{ opacity: 0, height: 0 }}
+                                      transition={{ duration: 0.2 }}
+                                    >
+                                      {subitem.nested.map((nestedItem, nestedIdx) => (
+                                        <motion.a
+                                          key={`${subitem.label}-${nestedIdx}`}
+                                          href={nestedItem.href}
+                                          onClick={() => setIsMobileMenuOpen(false)}
+                                          className="px-5 py-2 text-gray-400 hover:text-yellow-400 hover:bg-yellow-500/5 text-xs font-medium tracking-wide transition-all rounded-lg border-l-2 border-yellow-500/10 block"
+                                          initial={{ opacity: 0, x: -10 }}
+                                          animate={{ opacity: 1, x: 0 }}
+                                          transition={{ delay: nestedIdx * 0.03 }}
+                                        >
+                                          → {nestedItem.label}
+                                        </motion.a>
+                                      ))}
+                                    </motion.div>
+                                  )}
+                                </div>
+                              );
+                            })}
                           </motion.div>
                         )}
                       </AnimatePresence>
@@ -300,7 +427,7 @@ export default function Header() {
                   );
                 })}
 
-                {/* Mobile Staff Login Button */}
+                {/* Mobile Login Button */}
                 <motion.button
                   onClick={() => setIsAuthModalOpen(true)}
                   className="w-full mt-4 px-4 py-3 bg-gradient-to-r from-yellow-500 to-amber-500 hover:from-yellow-400 hover:to-amber-400 text-black font-bold rounded-lg transition-all text-sm flex items-center justify-center gap-2 shadow-lg"
@@ -308,7 +435,7 @@ export default function Header() {
                   whileTap={{ scale: 0.95 }}
                 >
                   <BagIcon size={16} color="#000" />
-                  Staff Login
+                  Login
                 </motion.button>
               </div>
             </motion.div>

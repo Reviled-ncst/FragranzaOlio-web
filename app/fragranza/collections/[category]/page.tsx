@@ -215,7 +215,7 @@ export default function CategoryPage() {
                   </div>
 
                   <div className="flex items-center justify-between pt-3 border-t border-yellow-500/10">
-                    <span className="text-lg font-bold text-yellow-300">${product.price}</span>
+                    <span className="text-lg font-bold text-yellow-300">${product.basePrice}</span>
                     <motion.button
                       className="px-3 py-1.5 bg-gradient-to-r from-yellow-400 to-amber-300 hover:from-yellow-300 hover:to-yellow-200 text-black font-semibold text-xs rounded-lg transition-all"
                       whileHover={{ scale: 1.05 }}

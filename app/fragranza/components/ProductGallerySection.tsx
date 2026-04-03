@@ -224,7 +224,7 @@ export default function ProductGallerySection() {
                     {/* Price & Button */}
                     <div className="flex items-center justify-between pt-4 border-t border-yellow-500/10">
                       <span className="text-2xl font-bold text-yellow-300">
-                        {fragrance.price}
+                        ${fragrance.basePrice}
                       </span>
                       <motion.button
                         className="px-4 py-2 bg-gradient-to-r from-yellow-400 to-amber-300 hover:from-yellow-300 hover:to-yellow-200 text-black font-semibold rounded-lg text-sm transition-all"
